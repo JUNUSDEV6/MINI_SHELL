@@ -2,36 +2,28 @@ Start : 4 avril 2024
 
 Update:
 
-    |- pour le moment la commande "cat a.txt" fonctionne, elle fonctionne parcontre avec pipex donc le contenu de a.txt est juste rediriger dans un fichier qui s'appelle alles.txt, c'est biensur pas ce qu'il faut faire mais au moins on as deja un mini truc qui fonctionne :)
-    |- j'ai aussi ajouter la commande "history" mais elle ne fonctionne pas encore super bien :D
+    |- ???
 
 Étapes:
 
-/methode agile
-
-    |- session une fois par semaine en faisant du KDS (kick, drop, start)
-
-/pair programming
-
-    |- coder a deux ( driver ou navigator ) changer de role toutes les 20 min par exemple
-
-/prompt_display
-  
-    |- la mise en place as ete faite mais il faut encore la securiser
-
 /history
   
-    |- la mise en place as aussi ete faite mais il faudrai pouvoir voir l'entiereté de l'historique a la demande
-
-/history_cleaner
+    |- rendre rl_replace_line fonctionnel + ctrl D|/|C
 
 /lexer (lexical analysis)
 
+    |- bien faire le tri entre les metacharacter (<, >, |, ...) et le reste.
+
 /parser
 
-	|- bien gerer l'ordre d'execution lors du parsing, comme en math par exemple ( *, /, +, - )
+    |- words, cmd, args, ...
+    |- bien gerer l'ordre d'execution lors du parsing, comme en math par exemple ( *, /, +, - )
 
 /execution
+
+    |- ???
+
+|---------------------------------------------------------------------------------------------------|
 
 Ressources:
 

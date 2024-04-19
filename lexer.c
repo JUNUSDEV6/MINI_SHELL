@@ -3,49 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
+/*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 11:31:33 by clegros           #+#    #+#             */
-/*   Updated: 2024/04/07 11:31:35 by clegros          ###   ########.fr       */
+/*   Created: 2024/04/17 12:40:14 by yohanafi          #+#    #+#             */
+/*   Updated: 2024/04/17 17:43:16 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_historic(t_historic *hist)
+bool	ft_check_quote(char *str)
 {
-	printf("--  %s\n", hist->content);
-	return ;
+	int i = 0;
+    bool double_flag = true;
+    bool single_flag = true;
+    bool in_double_quotes = false;
+    bool in_single_quotes = false;
+
+    while (str[i])
+    {
+        if (str[i] == DOUBLE_QUOTE && !in_single_quotes)
+            in_double_quotes = !in_double_quotes;
+
+        if (str[i] == QUOTE && !in_double_quotes)
+            in_single_quotes = !in_single_quotes;
+
+        i++;
+    }
+    double_flag = !in_double_quotes;
+    single_flag = !in_single_quotes;
+
+    return (double_flag && single_flag);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 }
 
-void	ft_dispatch(char *line, t_element cmd, t_element word, t_historic *hist)
+static bool	ft_lexer_token(char c)
 {
-	int			i;
-	int			j;
+	if (c == QUOTE || c == DOUBLE_QUOTE)
+		return (true);
+	if (c == PIPE_LINE)
+		return (true);
+	if (c == REDIR_IN || c == REDIR_OUT)
+		return (true);
+	return (false);
+}
 
-	i = 0;
-	j = 0;
-	while(line[i] != '\0')
+static void	ft_stock_token(char *c, t_lexer *lexer)
+{
+	lexer->chr = *c;
+//	printf("---%c---\n", lexer->chr);
+	lexer = lexer->next;
+}
+
+static void	ft_scan(t_lexer *lexer)
+{
+	char	*ptr;
+
+	while (lexer != NULL)
 	{
-		if (ft_strncmp(&line[i], "cat", 3) == 0)
+		//printf("--0--\n");
+		ptr = lexer->str;
+		while (*ptr != '\0')
 		{
-			strncpy(cmd.content, "cat", 4);
-			cmd.type = "built";
-			i += 3;
+			//printf("--1--\n");
+			if (ft_lexer_token(*ptr))
+				ft_stock_token(ptr, lexer);
+			ptr++;
 		}
-		else if (ft_strncmp(line, "history", 7) == 0)
-		{
-			ft_historic(hist);
-			return ;
-		}
-		if (line[i] == ' ')
-			i++;
-		while (line[i + j] != ' ' && line[i + j] != '\0')
-			j++;
-		strncpy(word.content, "a.txt", 5);
-		word.content[j] = '\0';
-		word.type = "word";
-		i += j;
+		lexer = lexer->next;
 	}
-	return ;
+}
+
+void	ft_lexer(t_lexer *list)
+{
+	//if (!ft_check_quote(list->str))
+		//write(1, "Error\n", 6);
+	ft_scan(list);
 }
