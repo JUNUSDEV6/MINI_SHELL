@@ -46,7 +46,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *src);
 char	**ft_split(char *str, char c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(char *s1, char *s2, size_t n);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_pipex(int argc, char *args[], char *envp[]);
 

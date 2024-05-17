@@ -6,7 +6,7 @@
 /*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 22:09:28 by clegros           #+#    #+#             */
-/*   Updated: 2024/04/10 13:51:34 by yohanafi         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:01:26 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,126 @@
 
 t_lexer	*ft_lexero(char **args, t_lexer *list)
 {
-	int		i;
-	t_lexer	*elem;
 	t_lexer	*head;
+	t_lexer	*elem;
+	int		i;
 
+	head = NULL;
 	i = 0;
-	head = list;
-	while (args[i] != NULL)
+	if (args)
 	{
-		
-		elem = ft_lstnew(args[i]);
-		if (list->str == NULL)
+		while (args[i] != NULL)
 		{
+			elem = ft_lstnew(args[i]);
+			elem->i = i;
+			elem->chr = "w";
+			if (!elem)
+				return (NULL);
+			if (!head)
+				head = elem;
+			else
+				ft_lstadd_back(&list, elem);
 			list = elem;
-			head = list;
+			i++;
 		}
-		else
-		{
-			if (list->next)
-				list = list->next;
-			ft_lstadd_back(&list, elem);
-		}
-		if (list != NULL)
-		{
-//			printf("3--%s--\n", list->str);
-		}
-		i++;
 	}
 	return (head);
 }
 
-/*t_lexer	ft_dispatch(char *line, t_lexer elem)
+static char	*duplicate_path(const char *path)
 {
-	int	i;
-	int	j;
+    if (path == NULL)
+        return NULL;
+    return strdup(path);
+}
 
-	i = 0;
-	j = 0;
-	while (line[i] != '\0')
+static size_t token_length(const char *token)
+{
+    size_t len;
+	
+	len = 0;
+    while (token[len] != '\0' && token[len] != ':')
+        len++;
+    return len;
+}
+
+static int check_access(const char *token, const char *command)
+{
+    size_t command_len;
+	size_t token_len;
+	
+	command_len = strlen(command);
+
+    while (*token != '\0')
 	{
-		//ft_line_valid(line);
-		if (ft_strncmp(&line[i], "cat", 3) == 0)
+		token_len = token_length(token);
+        char full_path[token_len + command_len + 2];
+        memcpy(full_path, token, token_len);
+        full_path[token_len] = '/';
+        memcpy(full_path + token_len + 1, command, command_len + 1);
+        if (access(full_path, X_OK) == 0)
+            return 1;
+        token += token_len;
+        if (*token == ':')
+            token++;
+    }
+    return (0);
+}
+
+static int is_command_valid(const char *command)
+{
+    char *path;
+    char *path_copy;
+    char *token; 
+    int result;
+ 
+	path = getenv("PATH");
+	path_copy = duplicate_path(path);
+    
+    if (path_copy == NULL)
+        return (0);
+	token = path_copy;
+	result = check_access(token, command);
+    free(path_copy);
+    return (result);
+}
+
+t_pipex	ft_dispatch(t_pipex exec, char *arg)
+{
+	char	**args;
+	args = ft_split(arg, ' ');
+	if (arg)
+	{
+		//printf("pp----%s----\n", *pipex.cmd_paths);
+		if (is_command_valid(args[0]))
 		{
-			elem.cmd = ft_strdup("/bin/cat");
-			i += 3;
-			while (line[i] == ' ')
-				i++;
-			while (line[i + j] != ' ' && line[i + j] != '\0')
-				j++;
-			elem.word = strndup(&line[i], j);
-			return (elem);
+			exec.cmd_args = &args[0];
+			exec.cmd = parsing(exec.cmd_paths, *exec.cmd_args);
+			//printf("pc----%s----\n", exec.cmd);
 		}
-		i++;
 	}
-	return (elem);
+	return (exec);
+}
+/*static t_lexer	*ft_parser(t_lexer *list)
+{
+	t_lexer	*head;
+
+	head = NULL;
+	while (list)
+	{
+		if ((ft_strncmp(list->str, "$", 1) == 0) && (!list->str[1]))
+		{
+			list = list->next;
+			if (ft_strncmp(list->next->str, "=", 1) == 0)
+			{
+				list->chr = "n";
+				list = list->next->next;
+				list->chr = "e";
+			}
+			else
+				list->chr = "E";
+		}
+		list = list->next;
+	}
+	return (head);
 }*/

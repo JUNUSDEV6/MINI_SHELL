@@ -48,6 +48,7 @@ char	*parsing(char **cmd_paths, char *cmd_args)
 	{
 		temp = ft_strjoin(*cmd_paths, "/");
 		cmd = ft_strjoin(temp, cmd_args);
+		//printf("1337%s\n", cmd);
 		free(temp);
 		if (access(cmd, X_OK) == 0)
 			return (cmd);
