@@ -6,12 +6,31 @@
 /*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:48:28 by yohanafi          #+#    #+#             */
-/*   Updated: 2024/05/23 17:56:52 by yohanafi         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:28:25 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+//static void	here_doc(char **argv)
+//{
+//	pid_t	pid;
+//	int		p_fd[2];
+//	//printf("4");
+//	if (pipe(p_fd) == -1)
+//		exit(1);
+//	pid = fork();
+//	if (pid == -1)
+//		exit(1);
+//	if (!pid)
+//		here_txt(argv, p_fd);
+//	else
+//	{
+//		close(p_fd[1]);
+//		dup2(p_fd[0], 0);
+//		wait(0);
+//	}
+//}
 
 static void	exec(char **cmd, char **envp)
 {
@@ -54,49 +73,7 @@ static void	exec(char **cmd, char **envp)
 			//exit(EXIT_FAILURE);
 }
 /*!!!!!!!!!!!!!!!!!!!!!je dois faire ca encore!!!!!!!!!!!!!!!!!*/
-//static void	here_txt(char *limiter, t_simple_cmds *cmd)
-//{
-//	char	*line;
-//	(void)cmd;
-//
-//	//printf("6");
-//	while (1)
-//	{
-//		line = get_next_line(0);
-//		//printf("%s", line);
-//		if (!line)
-//			exit(EXIT_FAILURE);
-//		if (!ft_strncmp(line, limiter, ft_strlen(limiter)))
-//		{
-//			//printf("0\n");
-//			//printf("%s\n", line);
-//			free(line);
-//			exit(EXIT_SUCCESS);
-//		}
-//		//ft_putstr_fd(line, cmd->p_fd[1]);
-//		free(line);
-//	}
-//}
 
-//static void	here_doc(char **argv)
-//{
-//	pid_t	pid;
-//	int		p_fd[2];
-//	//printf("4");
-//	if (pipe(p_fd) == -1)
-//		exit(1);
-//	pid = fork();
-//	if (pid == -1)
-//		exit(1);
-//	if (!pid)
-//		here_txt(argv, p_fd);
-//	else
-//	{
-//		close(p_fd[1]);
-//		dup2(p_fd[0], 0);
-//		wait(0);
-//	}
-//}
 static void ft_close(int *fd)
 {
 	close(*fd);
@@ -121,7 +98,33 @@ static char *rtrim(char *str) {
 static char *trim(char *str) {
     return rtrim(ltrim(str));
 }
-static void	ft_check_redirection(t_simple_cmds *cmd, int fd)
+
+static void	here_txt(char *limiter, t_simple_cmds *cmd)
+{
+	char	*line;
+
+	//close(cmd->p_fd_output[0]);
+	printf("%s---------\n:", limiter);
+	while (1)
+	{
+		line = get_next_line(0);
+		if (!line){
+			printf("1\n");
+			printf("%s", line);
+			exit(EXIT_FAILURE);}
+		if (!ft_strncmp(line, trim(limiter), ft_strlen(trim(limiter))))
+		{
+			//printf("0\n");
+			//printf("%s\n", line);
+			free(line);
+			exit(EXIT_SUCCESS);
+		}
+		ft_putstr_fd(line, cmd->p_fd_output[1]);
+		free(line);
+	}
+}
+
+static void	ft_check_redirection(t_simple_cmds *cmd, int fd, int stdin)
 {
 	if (!cmd)
 		return ;
@@ -137,9 +140,11 @@ static void	ft_check_redirection(t_simple_cmds *cmd, int fd)
 
 		fd = open(trim(cmd->redirections->next->token), O_RDONLY, 0777);
 		dup2(fd, 0);}
-	//if (!ft_strncmp(cmd->redirections->token, "<<", 1) && ft_strlen(cmd->redirections->token) == 2){
-	//	here_txt(cmd->redirections->next->token, cmd);
-	//}
+	if (!ft_strncmp(cmd->redirections->token, "<<", 1) && ft_strlen(cmd->redirections->token) == 2){
+		dup2(stdin, 0);
+		close(stdin);
+		here_txt(cmd->redirections->next->token, cmd);
+	}
 	if (fd == - 1)
 	{
 		write(2, cmd->redirections->next->token, ft_strlen(cmd->redirections->next->token));
@@ -153,6 +158,7 @@ static pid_t	ft_pipe(t_simple_cmds *cmd, char **envp, int nb, int argc)
 {
 	pid_t	pid;
 	int		fd = 0;
+	int		save_stdin = dup(0);
 	printf("cmd->str ----------: %d - %s\n", nb, *cmd->str);
 	//printf("nb = %d ----- argc = %d\n\n", nb, argc);
 	// derniere modification
@@ -177,7 +183,7 @@ static pid_t	ft_pipe(t_simple_cmds *cmd, char **envp, int nb, int argc)
 		}
 		if (cmd->redirections)
 		{
-			ft_check_redirection(cmd, fd);
+			ft_check_redirection(cmd, fd, save_stdin);
 			//fd = open(cmd->redirections->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			//dup2(fd, 1);
 		}

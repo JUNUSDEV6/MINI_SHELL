@@ -6,7 +6,7 @@
 /*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:04:56 by clegros           #+#    #+#             */
-/*   Updated: 2024/05/23 16:21:37 by yohanafi         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:51:01 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,24 @@ void	minishell_loop(char *line, char **envp)
                 command_executer(cmd_list->str, envp, cmd_list);
             }
         }
-        while (cmd_list != NULL)
-        {
-            printf("\n\nCommand:\n");
-            int i = 0;
-            while (cmd_list->str[i] != NULL)
-            {
-                printf("  %s\n", cmd_list->str[i]);
-                i++;
-            }
-            printf("\n\nRedirections:\n");
-            t_lexer *redir = cmd_list->redirections;
-            while (redir != NULL)
-            {
-                printf("  %s\n", redir->token);
-                redir = redir->next;
-            }
-            cmd_list = cmd_list->next;
-        }
+        //while (cmd_list != NULL)
+        //{
+        //    printf("\n\nCommand:\n");
+        //    int i = 0;
+        //    while (cmd_list->str[i] != NULL)
+        //    {
+        //        printf("  %s\n", cmd_list->str[i]);
+        //        i++;
+        //    }
+        //    printf("\n\nRedirections:\n");
+        //    t_lexer *redir = cmd_list->redirections;
+        //    while (redir != NULL)
+        //    {
+        //        printf("  %s\n", redir->token);
+        //        redir = redir->next;
+        //    }
+        //    cmd_list = cmd_list->next;
+        //}
         
         //free_list(lexer_list);
         //free_cmds(cmd_list);

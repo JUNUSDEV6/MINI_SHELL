@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youneshanafi <youneshanafi@student.42.f    +#+  +:+       +#+        */
+/*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 18:02:01 by youneshanaf       #+#    #+#             */
-/*   Updated: 2023/09/19 11:15:46 by youneshanaf      ###   ########.fr       */
+/*   Updated: 2024/05/27 17:15:38 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ void    create_list(t_list **list, int fd)
 			return ;
 		cnt_chr = read(fd, buff, BUFFER_SIZE);
 		if (!cnt_chr)
-		{
-			free(buff);
-			return ;
-		}
+			return (free(buff));
 		buff[cnt_chr] = '\0';
 		add(list, buff);
 	}
