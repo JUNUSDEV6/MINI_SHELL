@@ -68,7 +68,7 @@ t_simple_cmds	*create_simple_cmd_node(void)
 	return (new_node);
 }
 
-void	add_simple_cmd_node(t_simple_cmds **cmd_list, t_simple_cmds *new_node)
+void	add_spl_cmd(t_simple_cmds **cmd_list, t_simple_cmds *new_node)
 {
 	t_simple_cmds	*current;
 

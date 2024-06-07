@@ -12,47 +12,47 @@
 
 #include "../../includes/minishell.h"
 
-void	handle_double_greater(t_lexer **list, char **t_start, char **crt)
+void	handle_dbl_greater(t_lexer **list, char **t_start, char **crt)
 {
 	if (*crt != *t_start)
-		add_current_token(list, t_start, *crt - 1);
+		add_crt_token(list, t_start, *crt - 1);
 	add_token(list, ">>");
 	*crt += 2;
 	*t_start = *crt;
 }
 
-void	handle_double_less(t_lexer **list, char **token_start, char **current)
+void	handle_dbl_less(t_lexer **list, char **t_start, char **current)
 {
-	if (*current != *token_start)
-		add_current_token(list, token_start, *current - 1);
+	if (*current != *t_start)
+		add_crt_token(list, t_start, *current - 1);
 	add_token(list, "<<");
 	*current += 2;
-	*token_start = *current;
+	*t_start = *current;
 }
 
 void	handle_greater(t_lexer **list, char **token_start, char **current)
 {
 	if (*current != *token_start)
-		add_current_token(list, token_start, *current - 1);
+		add_crt_token(list, token_start, *current - 1);
 	add_token(list, ">");
 	(*current)++;
 	*token_start = *current;
 }
 
-void	handle_less(t_lexer **list, char **token_start, char **current)
+void	handle_less(t_lexer **list, char **t_start, char **current)
 {
-	if (*current != *token_start)
-		add_current_token(list, token_start, *current - 1);
+	if (*current != *t_start)
+		add_crt_token(list, t_start, *current - 1);
 	add_token(list, "<");
 	(*current)++;
-	*token_start = *current;
+	*t_start = *current;
 }
 
-void	handle_pipe(t_lexer **list, char **token_start, char **current)
+void	handle_pipe(t_lexer **list, char **t_start, char **current)
 {
-	if (*current != *token_start)
-		add_current_token(list, token_start, *current - 1);
+	if (*current != *t_start)
+		add_crt_token(list, t_start, *current - 1);
 	add_token(list, "|");
 	(*current)++;
-	*token_start = *current;
+	*t_start = *current;
 }

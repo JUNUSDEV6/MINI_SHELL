@@ -6,49 +6,34 @@
 /*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 12:11:34 by yohanafi          #+#    #+#             */
-/*   Updated: 2024/05/21 14:38:36 by yohanafi         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:34:26 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	no_path(char **argv, char **envp)
+void	here_txt(char *limiter, t_simple_cmds *cmd, int fd)
 {
-	int	i;
+	char	*line;
+	(void)cmd;
 
-	i = 0;
-	(void)argv;
-	while (envp[i])
+	while (1)
 	{
-		if (ft_strnstr(envp[i], "PATH", 4))
-			return (EXIT_SUCCESS);
-		i++;
+		line = readline("> ");
+		if (!line)
+			exit(EXIT_FAILURE);
+		if (!ft_strncmp(line, trim(limiter), ft_strlen(trim(limiter))))
+		{
+			free(line);
+			break ;
+		}
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
+		free(line);
 	}
-	return (EXIT_FAILURE);
+	//unlink(".fd_Yann.txt");
 }
 
-int	open_file(char *file, int in_out, char **argv, char **envp)
-{
-	int	rlt;
-	//printf("2");
-	if (no_path(argv, envp))
-		exit(127);
-	rlt = 0;
-	if (in_out == 0)
-		rlt = open(file, O_RDONLY, 0777);
-	if (in_out == 1)
-		rlt = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (in_out == 2)
-		rlt = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	if (rlt == -1)
-	{
-		printf("1");
-		exit(0);
-	}
-	//printf("1");
-	//printf("5");
-	return (rlt);
-}
 
 static char	*ft_free_tab(char **tabs)
 {

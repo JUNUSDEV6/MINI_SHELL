@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	convert_lexer_to_cmds(t_lexer **tokens, t_simple_cmds **cmd_list)
+void	lexer_to_cmds(t_lexer **tokens, t_simple_cmds **cmd_list)
 {
 	while (*tokens != NULL)
 		parse_command(tokens, cmd_list);

@@ -6,7 +6,7 @@
 /*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:07:25 by clegros           #+#    #+#             */
-/*   Updated: 2024/02/07 13:43:51 by clegros          ###   ########.fr       */
+/*   Updated: 2024/05/29 12:57:47 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*parsing(char **cmd_paths, char *cmd_args)
 	{
 		temp = ft_strjoin(*cmd_paths, "/");
 		cmd = ft_strjoin(temp, cmd_args);
-		//printf("1337%s\n", cmd);
 		free(temp);
 		if (access(cmd, X_OK) == 0)
 			return (cmd);

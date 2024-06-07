@@ -6,17 +6,17 @@
 /*   By: youneshanafi <youneshanafi@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 15:16:03 by youneshanaf       #+#    #+#             */
-/*   Updated: 2023/09/19 09:11:29 by youneshanaf      ###   ########.fr       */
+/*   Updated: 2024/05/29 10:28:55 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_get_next_line.h"
 #include <stdlib.h>
 
-int found_newline(t_list *list)
+int	found_newline(t_list *list)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (list == NULL)
 		return (0);
@@ -26,7 +26,7 @@ int found_newline(t_list *list)
 		while (list->str_buf[i] && i < BUFFER_SIZE)
 		{
 			if (list->str_buf[i] == '\n')
-				return 1;
+				return (1);
 			i++;
 		}
 		list = list->next;
@@ -34,7 +34,7 @@ int found_newline(t_list *list)
 	return (0);
 }
 
-t_list  *find_last_node(t_list *list)
+t_list	*find_last_node(t_list *list)
 {
 	if (list == NULL)
 		return (NULL);
@@ -43,11 +43,11 @@ t_list  *find_last_node(t_list *list)
 	return (list);
 }
 
-void    str_copy(t_list *list, char *str)
+void	str_copy(t_list *list, char *str)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	if (list == NULL)
 		return ;
 	j = 0;
@@ -69,15 +69,15 @@ void    str_copy(t_list *list, char *str)
 	str[j] = '\0';
 }
 
-int len_newline(t_list *list)
+int	len_newline(t_list *list)
 {
-	int i;
-	int len;
-	
+	int	i;
+	int	len;
+
 	if (list == NULL)
 		return (0);
 	len = 0;
-	while(list)
+	while (list)
 	{
 		i = 0;
 		while (list->str_buf[i])
@@ -85,7 +85,7 @@ int len_newline(t_list *list)
 			if (list->str_buf[i] == '\n')
 			{
 				len++;
-				return(len);
+				return (len);
 			}
 			++i;
 			++len;
@@ -95,10 +95,10 @@ int len_newline(t_list *list)
 	return (len);
 }
 
-void    dealloc(t_list **list, t_list *clean_node, char *buff)
+void	dealloc(t_list **list, t_list *clean_node, char *buff)
 {
-	t_list *tmp;
-	
+	t_list	*tmp;
+
 	if (*list == NULL)
 		return ;
 	while (*list)

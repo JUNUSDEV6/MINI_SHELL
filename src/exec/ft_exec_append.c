@@ -6,7 +6,7 @@
 /*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 09:18:14 by clegros           #+#    #+#             */
-/*   Updated: 2024/05/06 09:18:15 by clegros          ###   ########.fr       */
+/*   Updated: 2024/05/29 14:08:04 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	first_child_app(t_pipex pipex, char *argv[], char *envp[])
 	close(pipex.tube[1]);
 	pipex.cmd_args = ft_split(argv[0], ' ');
 	pipex.cmd = parsing(pipex.cmd_paths, pipex.cmd_args[0]);
-
 	if (!pipex.cmd)
 		error();
 	if (execve(pipex.cmd, pipex.cmd_args, envp) == -1)

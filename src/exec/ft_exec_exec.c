@@ -6,7 +6,7 @@
 /*   By: yohanafi <yohanafi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 22:09:06 by clegros           #+#    #+#             */
-/*   Updated: 2024/05/21 11:58:43 by yohanafi         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:44:28 by yohanafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,13 @@ int	list_parkour(t_lexer *list)
 	return (i);
 }
 
+/*
+	ici il y a les differentes redirections, 
+	il faut encore update les infos a leur envoyer
+*/
+
 void	ft_first_iter(char *args[], char *envp[])
 {
-	/*
-	
-	ici il y a les differentes redirections, il faut encore update les infos a leur envoyer
-
-	*/
-
-	//if (ft_meta(args[1]) == 1)
-		//ft_pipex(3, args, envp);
 	if (ft_meta(args[1]) == 2)
 		ft_input(args, envp);
 	else if (ft_meta(args[1]) == 3)
@@ -114,48 +111,53 @@ int	ft_stacklen(t_lexer *list)
 	return (i);
 }
 
-void	command_executer(char **args, char **envp, t_simple_cmds *list)
-{
-	/*
+/*
 	
-	-le premier if va dans le multi_pipe si il y a plus d'un element dans la liste
+	-le premier if va dans le multi_pipe si
+	il y a plus d'un element dans la liste
 	( du coup si il y a au moins un pipe )
 
-	-le else execute directement les commandes simples comme "ls -la" ou "cat Makefile"
+	-le else execute directement les commandes 
+	simples comme "ls -la" ou "cat Makefile"
 
-	*/
-	int	i;
-	(void)args;
+*/
+
+void	command_executer(char **args, char **envp, t_simple_cmds *list, char **env_p)
+{
+	int				i;
 	t_simple_cmds	*head;
 
-	printf("11111\n");
 	head = malloc(sizeof(t_simple_cmds));
+	if (!head)
+		return ;
 	head = NULL;
 	i = 0;
-	if(list)
+	(void)envp;
+	(void)args;
+	if (list)
 	{
 		head = list;
 		while (list)
 		{
-			printf("list->**str :%s\n", *list->str);
 			if (list->next)
 				list = list->next;
 			else
-				break;
+				break ;
 			i++;
 		}
 		list = head;
-		// i vaut au nombre d'arguments de pipe et pas au nombre de "|"
-
+		ft_multi_pipe(i, list, env_p);
+	}
+}
+/*
+		i vaut au nombre d'arguments de pipe et pas au nombre de "|"
 		printf("\ni = %d\n", i);
 		printf("\nbefore m\n");
-		ft_multi_pipe(i, list, envp);
 		printf("\nafter m\n");
-	}
-	/*else
+	else
 	{
 		printf("before ex\n");
 		execute_command(envp, list->str);
 		printf("after ex\n");
-	}*/
-}
+	}
+*/

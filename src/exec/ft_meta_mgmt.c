@@ -1,9 +1,16 @@
-
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_meta_mgmt.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/29 10:35:53 by clegros           #+#    #+#             */
+/*   Updated: 2024/05/29 14:42:10 by clegros          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 int	ft_meta_str(char c)
 {
@@ -21,7 +28,7 @@ int	list_parkour_str(char *list)
 {
 	int	i;
 	int	j;
-	int meta;
+	int	meta;
 
 	i = 0;
 	j = 0;
@@ -41,6 +48,43 @@ int	list_parkour_str(char *list)
 		list++;
 	}
 	return (i);
+}
+
+static int	process_lexer_list(t_lexer *list, char **args)
+{
+	int	arg_count;
+
+	arg_count = 0;
+	while (list)
+	{
+		if (list && ft_meta(list->token) == 0)
+		{
+			if (arg_count < 100)
+				args[arg_count++] = list->token;
+			list = list->next;
+		}
+		else if (list && ft_meta(list->token) > 0)
+		{
+			list->chr = "m";
+			args[arg_count++] = list->token;
+			list = list->next;
+		}
+	}
+	return (arg_count);
+}
+
+void	ft_meta_mgmt(char *cmd, char **envp)
+{
+	t_lexer	*list;
+	char	*args[100];
+
+	list = NULL;
+	tokenize(cmd, &list);
+	if (list_parkour(list) >= 1)
+	{
+		process_lexer_list(list, args);
+		ft_first_iter(args, envp);
+	}
 }
 
 /*static int	ft_meta_str(char *c)
@@ -76,32 +120,23 @@ static int	list_parkour_str(char *list)
 	return (i);
 }*/
 
-void	ft_meta_mgmt(char *cmd, char **envp)
+/*void	ft_meta_mgmt(char *cmd, char **envp)
 {
-	printf("---cmd---%s\n", cmd);
 	int		i;
-
-	i = 0;
+	char	*args[100];
+	int		arg_count;
 	t_lexer	*list;
 
+	i = 0;
 	list = NULL;
-
-	char	*args[100]; // max files ??? 
-	int		arg_count;
 	arg_count = 0;
-
-	(void)envp;
-	//printf("2-2\n");
 	tokenize(cmd, &list);
-	//printf("1-1\n");
-	//print_list(list);
 	if (list_parkour(list) >= 1)
 	{
 		while (list)
 		{
 			if (list && ft_meta(list->token) == 0)
 			{
-				//printf("jaaaaa\n");
 				if (arg_count <= 100)
 					args[arg_count++] = list->token;
 				list = list->next;
@@ -112,9 +147,8 @@ void	ft_meta_mgmt(char *cmd, char **envp)
 				args[arg_count++] = list->token;
 				list = list->next;
 			}
-			//printf("arg%d = %s\n", i, args[i]);
 			i++;
 		}
 		ft_first_iter(args, envp);
 	}
-}
+}*/

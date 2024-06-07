@@ -1,4 +1,5 @@
 GREEN=\033[0;32m
+STOP=\033[0m
 
 define PRINT_LOADING_BAR
 	@progress=$$(echo "scale=2; $(1) / $(2) * 100" | bc); \
@@ -14,6 +15,7 @@ SRC     = src/lexer/ft_str_utils.c\
 			src/lexer/ft_token_cases.c\
 			src/parser/ft_parser.c\
 			src/parser/ft_parser_utils.c\
+			src/parser/ft_parser_utils_2.c\
 			src/parser/ft_cmd_utils.c\
 			src/ft_signals.c\
 			utils/get_next_line/ft_get_next_line.c\
@@ -30,6 +32,16 @@ SRC     = src/lexer/ft_str_utils.c\
 			src/exec/ft_free.c\
 			src/exec/ft_lexer.c\
 			src/exec/ft_meta_mgmt.c\
+			src/expander/ft_expander.c\
+			src/expander/ft_expander_utils.c\
+			src/built_ins/ft_cd.c\
+			src/built_ins/ft_echo.c\
+			src/built_ins/ft_env.c\
+			src/built_ins/ft_exit.c\
+			src/built_ins/ft_export.c\
+			src/built_ins/ft_pwd.c\
+			src/built_ins/ft_unset.c\
+			src/built_ins/ft_built_in.c\
 			main.c
 OBJ     = $(SRC:.c=.o)
 CC      = gcc
@@ -47,7 +59,7 @@ all:    $(NAME)
 
 $(NAME): $(OBJ) $(LIB_LIB)
 		@$(COMP) -fsanitize=address -g3 $(OBJ) -o $(NAME) $(LIB_LIB) $(RDL_LIB)
-		@echo "$(GREEN)Compilation completed.$(NC)"
+		@echo "$(GREEN)Compilation completed.$(STOP)"
 
 %.o: %.c
 		@$(CC) $(CFLAGS) $(DIR_INC) $(RDL_INC) -c $< -o $@
@@ -60,7 +72,7 @@ $(LIB_LIB):
 clean:
 		@$(RM) $(OBJ)
 		@$(MAKE) -C utils clean
-		@echo "$(GREEN)Cleaning completed.$(NC)"
+		@echo "$(GREEN)Cleaning completed.$(STOP)"
 
 fclean: clean
 		@$(RM) $(NAME)

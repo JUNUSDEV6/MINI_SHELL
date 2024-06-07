@@ -1,3 +1,11 @@
+GREEN=\033[0;32m
+
+define PRINT_LOADING_BAR
+	@progress=$$(echo "scale=2; $(1) / $(2) * 100" | bc); \
+	percentage=$$(printf "%.0f" $$progress); \
+	echo "--LIBFT-- Progress: [$$percentage%]"
+endef
+
 SRCS	= ft_strrchr.c\
 		  ft_strjoin.c\
 		  ft_memmove.c\
@@ -51,23 +59,28 @@ BONUSN	= ft_lstnew.c\
 		  ft_lstiter.c\
 		  ft_lstmap.c
 BONUSO	= ${BONUSN:.c=.o}
+TOT_FIL	= $(words $(SRCS) $(BONUSN))
 
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${INCS}
+	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${INCS}
+	@$(eval FILES_DONE := $(shell echo $$(($(FILES_DONE) + 1))))
+	@$(call PRINT_LOADING_BAR,$(FILES_DONE),$(TOT_FIL))
 
 ${NAME}: ${OBJS}
-	${LIBC} ${NAME} ${OBJS}
-	${LIBR} ${NAME}
+	@${LIBC} ${NAME} ${OBJS}
+	@${LIBR} ${NAME}
+	@echo "$(GREEN)LIBFT - Compilation completed.$(NC)"
 
 all: ${NAME}
 
 clean:
-	${RM} ${OBJS} ${BONUSO}
+	@${RM} ${OBJS} ${BONUSO}
+	@echo "$(GREEN)LIBFT - Cleaning completed.$(NC)"
 
 bonus: ${OBJS} ${BONUSO}
-	ar rc ${NAME} ${OBJS} ${BONUSO}
+	@ar rc ${NAME} ${OBJS} ${BONUSO}
 
 fclean: clean
-	${RM} ${NAME}
+	@${RM} ${NAME}
 
 re: fclean all

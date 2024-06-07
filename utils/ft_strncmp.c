@@ -6,7 +6,7 @@
 /*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:55:40 by clegros           #+#    #+#             */
-/*   Updated: 2023/10/19 12:55:43 by clegros          ###   ########.fr       */
+/*   Updated: 2024/05/29 10:32:30 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned int	i;
 
-	if (!s1 || !s2) {
+	if (!s1 || !s2)
 		return (-1);
-	}
 	i = 0;
 	while (s1[i] == s2[i] && (s1[i] != '\0') && n > 0)
 	{

@@ -1,52 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_utils.c                                     :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clegros <clegros@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 17:45:54 by clegros           #+#    #+#             */
-/*   Updated: 2024/05/29 10:35:24 by clegros          ###   ########.fr       */
+/*   Created: 2024/05/31 19:33:23 by clegros           #+#    #+#             */
+/*   Updated: 2024/06/01 15:23:28 by clegros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_cd(t_simple_cmds *cmd)
 {
-	if (fd < 0)
-		return ;
-	write (fd, &c, 1);
-}
+	char	*crt_wd;
+	char	*new_wd;
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
+	crt_wd = NULL;
+	new_wd = NULL;
+	crt_wd = getcwd(crt_wd, sizeof(size_t));
+	crt_wd = ft_strjoin(crt_wd, "/");
+	new_wd = ft_strjoin(crt_wd, cmd->str[1]);
+	printf("-crt-%s--\n-new-%s--\n", crt_wd, new_wd);
+	chdir(new_wd);
 
-	i = 0;
-	if (!s || fd < 0)
-		return ;
-	while (s[i])
-	{
-		ft_putchar_fd(s[i], fd);
-		i++;
-	}
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	if (!s || fd < 0)
-		return ;
-	ft_putstr_fd(s, fd);
-	write (fd, "\n", 1);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	return (EXIT_SUCCESS);
 }
